@@ -1,0 +1,5 @@
+- name: Deploying till server
+  remote_user: root
+  hosts: server
+  roles:
+    - role: deploy
