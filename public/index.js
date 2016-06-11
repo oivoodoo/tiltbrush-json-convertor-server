@@ -137,7 +137,7 @@ class Form extends React.Component {
       req.end(() => {
           context._zone.setState({
               files: [],
-              prcessing: false,
+              processing: false,
           });
       });
     }
@@ -161,6 +161,7 @@ class Form extends React.Component {
               <div className="12u$">
                 <ul className="actions">
                   <li><input type="submit" value="Convert!"  disabled={this.state.processing} /></li>
+                  { this.state.processing ? <img width="32" height="32" alt="star" src="images/loading.gif" /> : null }
                 </ul>
               </div>
             </div>
