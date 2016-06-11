@@ -97,6 +97,16 @@ class Form extends React.Component {
         super(props, context);
 
         this.className = "files-dropzone";
+        this.state = {
+            fileType: "fbx",
+            email: "",
+        }
+    }
+
+    handleChange(e, field) {
+        let state = {};
+        state[field] = e.target.value;
+        this.setState(state);
     }
 
     setFiles = (files) => {
@@ -106,7 +116,9 @@ class Form extends React.Component {
     handleSubmit(e) {
       e.preventDefault();
 
-      var req = request.post('/upload');
+      var req = request.post('/upload')
+          .set('email', this.state.email)
+          .set('fileType', this.state.fileType);
       this.files.forEach((file)=> {
           req.attach('files', file, file.name);
       });
@@ -123,10 +135,10 @@ class Form extends React.Component {
           <form method="post" action="/upload" onSubmit={this.handleSubmit.bind(this)}>
             <div className="row 50%">
               <div className="6u 12u$(mobile)">
-                  <input type="email" className="text" name="email" placeholder="Email" required />
+                  <input type="email" className="text" name="email" placeholder="Email" onChange={((e) => this.handleChange(e, 'email')).bind(this)} required />
               </div>
               <div className="6u$ 12u$(mobile)">
-                <select name="fileType" placeholder="Choose">
+                <select name="fileType" placeholder="Choose" onChange={((e) => this.handleChange(e, 'fileType')).bind(this)} >
                   <option value="fbx">FBX</option>
                   <option value="obj">OBJ</option>
                 </select>
