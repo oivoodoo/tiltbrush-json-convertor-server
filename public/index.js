@@ -100,7 +100,9 @@ class Form extends React.Component {
         this.state = {
             fileType: "fbx",
             email: "",
+            processing: false,
         }
+        this.files = [];
     }
 
     handleChange(e, field) {
@@ -116,18 +118,26 @@ class Form extends React.Component {
     handleSubmit(e) {
       e.preventDefault();
 
-      var req = request.post('/upload')
-          .send({
-              email: this.state.email,
-              fileType: this.state.fileType,
-          })
+      if (this.files.length === 0) {
+          return
+      }
+
+      this.setState({
+          processing: true
+      });
+
+      var req = request
+          .post('/upload')
+          .field('email', this.state.email)
+          .field('fileType', this.state.fileType);
       this.files.forEach((file)=> {
           req.attach('files', file, file.name);
       });
       var context = this;
       req.end(() => {
           context._zone.setState({
-              files: []
+              files: [],
+              prcessing: false,
           });
       });
     }
@@ -150,7 +160,7 @@ class Form extends React.Component {
               </div>
               <div className="12u$">
                 <ul className="actions">
-                  <li><input type="submit" value="Convert!" /></li>
+                  <li><input type="submit" value="Convert!"  disabled={this.state.processing} /></li>
                 </ul>
               </div>
             </div>
