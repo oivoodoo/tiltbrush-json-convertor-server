@@ -117,8 +117,10 @@ class Form extends React.Component {
       e.preventDefault();
 
       var req = request.post('/upload')
-          .set('email', this.state.email)
-          .set('fileType', this.state.fileType);
+          .send({
+              email: this.state.email,
+              fileType: this.state.fileType,
+          })
       this.files.forEach((file)=> {
           req.attach('files', file, file.name);
       });
