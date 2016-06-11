@@ -1,35 +1,66 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Overflow by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Convertor</title>
-    <script src="build/react.js"></script>
-    <script src="build/react-dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-  </head>
-  <body>
-    <div id="example"></div>
+	<head>
+		<title>Overflow by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+    <article class="container box style3">
+      <header>
+        <h2>Convertor to FBX, OBJ</h2>
+        <p>Please choose the files to convert to specified file format then
+        you will receive email with processed files.</p>
+      </header>
 
-    <script type="text/babel">
-     ReactDOM.render(
-      <h1>Hello, world!</h1>,
-      document.getElementById('example')
-      );
-    </script>
+      <form method="post" action="#">
+        <div class="row 50%">
+          <div class="6u 12u$(mobile)"><input type="email" class="text" name="email" placeholder="Email" /></div>
+          <div class="6u$ 12u$(mobile)">
+            <select name="fileType" placeholder="Choose">
+              <option value="fbx">FBX</option>
+              <option value="obj">OBJ</option>
+            </select>
+          </div>
+          <div class="12u$">
+            <textarea name="message" placeholder="Message"></textarea>
+          </div>
+          <div class="12u$">
+            <ul class="actions">
+              <li><input type="submit" value="Convert!" /></li>
+            </ul>
+          </div>
+        </div>
+      </form>
+    </article>
 
-    <h1>Upload single file with fields</h1>
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+			</ul>
+			<div class="copyright">
+				<ul class="menu">
+					<li>&copy; Alexandr & Alexandr | All rights reserved.</li>
+				</ul>
+			</div>
+		</section>
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
-      Email: <input type="email" name="email"><br>
-      Type:
-      <select type="text" name="fileType">
-        <option value="fbx">fbx</option>
-        <option value=obj">obj</option>
-      </select>
-      <br><br>
-      Files: <input type="file" name="files" multiple>
-      <br><br>
-      <input type="submit" value="Submit">
-    </form>
-  </body>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
 </html>
