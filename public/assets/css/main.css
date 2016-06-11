@@ -58,6 +58,15 @@
 
 /* Containers */
 
+  .center-button-wrapper {
+    text-align: center;
+  }
+
+  .center-button-wrapper button {
+    position: absolute;
+    top: 50%;
+  }
+
 	.container {
 		margin-left: auto;
 		margin-right: auto;
@@ -1524,8 +1533,6 @@
 
 		ul.icons a {
 			display: inline-block;
-			width: 2.5em;
-			height: 2.5em;
 			line-height: 2.5em;
 			text-align: center;
 			border: 0;
@@ -1616,8 +1623,13 @@
 	}
 
 	form .files-dropzone {
-		min-height: 12em;
+		min-height: 10em;
     width: 100%;
+    border-width:2px;
+    border-color:#666;
+    border-style:dashed;
+    border-radius:5px;
+    padding: 5px;
 	}
 
 	form .formerize-placeholder {
