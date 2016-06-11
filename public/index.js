@@ -135,9 +135,11 @@ class Form extends React.Component {
       });
       var context = this;
       req.end(() => {
+          context.setState({
+              processing: false,
+          });
           context._zone.setState({
               files: [],
-              processing: false,
           });
       });
     }
