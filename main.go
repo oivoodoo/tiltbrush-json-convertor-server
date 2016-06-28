@@ -172,16 +172,17 @@ var channel *nats.EncodedConn
 func main() {
 	setup()
 
-	nc, _ := nats.Connect(nats.DefaultURL)
+	nc, _ = nats.Connect(nats.DefaultURL)
 	defer nc.Close()
 
-	channel, _ := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
+	channel, _ = nats.NewEncodedConn(nc, nats.JSON_ENCODER)
 	defer channel.Close()
 
 	log.SetHandler(text.New(os.Stderr))
 	log.SetLevel(log.DebugLevel)
 
-	// Simple Async Subscriber
+	log.Infof("nc: %v, channel: %v", nc, channel)
+
 	channel.Subscribe("generation", func(job *Job) {
 		log.Infof("Received message to process job %v", job)
 		job.process()
