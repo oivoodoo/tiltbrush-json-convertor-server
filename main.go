@@ -20,9 +20,9 @@ import (
 const DefaultLocation = "/tmp/%s"
 
 type Job struct {
-	fileType  string
-	email     string
-	filenames []string
+	FileType  string
+	Email     string
+	Filenames []string
 }
 
 func upload(c echo.Context) error {
@@ -68,22 +68,25 @@ func upload(c echo.Context) error {
 	}
 
 	job := &Job{
-		email:     email,
-		fileType:  fileType,
-		filenames: filenames,
+		Email:     email,
+		FileType:  fileType,
+		Filenames: filenames,
 	}
 
 	log.Infof("Job: %v", job)
 
-	channel.Publish("generation", job)
+	err = channel.Publish("generation", job)
+	if err != nil {
+		log.WithError(err).Errorf("On publishing to channel the job %v", job)
+	}
 
 	return c.HTML(http.StatusOK, fmt.Sprintf("<p>Uploaded successfully %d files with fields email=%s.</p>", len(files), email))
 }
 
 func (job Job) application() (string, error) {
-	if job.fileType == "fbx" {
+	if job.FileType == "fbx" {
 		return "/home/deploy/Support/bin/convert_to_fbx.py", nil
-	} else if job.fileType == "obj" {
+	} else if job.FileType == "obj" {
 		return "/home/deploy/Support/bin/convert_to_obj.py", nil
 	} else {
 		return "", errors.New("We can't process this job because of unknown format")
@@ -91,14 +94,14 @@ func (job Job) application() (string, error) {
 }
 
 func (job Job) process() {
-	for _, filename := range job.filenames {
+	for _, filename := range job.Filenames {
 		input := fmt.Sprintf(DefaultLocation, filename)
 
 		var ext = filepath.Ext(input)
 		u1 := uuid.NewV4()
-		output := input[0:len(input)-len(ext)] + "-" + u1.String() + "." + job.fileType
+		output := input[0:len(input)-len(ext)] + "-" + u1.String() + "." + job.FileType
 
-		logger := log.WithField("input", input).WithField("email", job.email).WithField("output", output)
+		logger := log.WithField("input", input).WithField("email", job.Email).WithField("output", output)
 		logger.Info("Begin processing")
 
 		application, err := job.application()
@@ -131,7 +134,7 @@ func (job Job) process() {
 const DefaultEmail = "alex.korsak@gmail.com"
 
 func (job Job) sendEmail(filename string, outputPath string) {
-	logger := log.WithField("filename", filename).WithField("email", job.email)
+	logger := log.WithField("filename", filename).WithField("email", job.Email)
 	defer os.Remove(outputPath)
 
 	arguments := []string{
@@ -175,7 +178,7 @@ func main() {
 	nc, _ = nats.Connect(nats.DefaultURL)
 	defer nc.Close()
 
-	channel, _ = nats.NewEncodedConn(nc, nats.JSON_ENCODER)
+	channel, _ = nats.NewEncodedConn(nc, nats.GOB_ENCODER)
 	defer channel.Close()
 
 	log.SetHandler(text.New(os.Stderr))
