@@ -12,7 +12,7 @@ class Footer extends React.Component {
                 </ul>
                 <div className="copyright">
                     <ul className="menu">
-                        <li>&copy; Alexandr & Alexandr | All rights reserved.</li>
+                        <li>&copy; Alexandr & <a href="mailto:alex.korsak@gmail.com">Alexandr</a> | All rights reserved.</li>
                     </ul>
                 </div>
             </section>

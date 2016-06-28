@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
+	"github.com/nats-io/nats"
 	"github.com/satori/go.uuid"
 	"io"
 	"net/http"
@@ -74,7 +75,7 @@ func upload(c echo.Context) error {
 
 	log.Infof("Job: %v", job)
 
-	go job.process()
+	channel.Publish("generation", job)
 
 	return c.HTML(http.StatusOK, fmt.Sprintf("<p>Uploaded successfully %d files with fields email=%s.</p>", len(files), email))
 }
@@ -165,11 +166,26 @@ func setup() {
 	}
 }
 
+var nc *nats.Conn
+var channel *nats.EncodedConn
+
 func main() {
 	setup()
 
+	nc, _ := nats.Connect(nats.DefaultURL)
+	defer nc.Close()
+
+	channel, _ := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
+	defer channel.Close()
+
 	log.SetHandler(text.New(os.Stderr))
 	log.SetLevel(log.DebugLevel)
+
+	// Simple Async Subscriber
+	channel.Subscribe("generation", func(job *Job) {
+		log.Infof("Received message to process job %v", job)
+		job.process()
+	})
 
 	e := echo.New()
 	e.Use(middleware.Logger())
