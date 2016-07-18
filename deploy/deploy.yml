@@ -2,4 +2,4 @@
   remote_user: root
   hosts: server
   roles:
-    - role: deploy
+    - role: converter

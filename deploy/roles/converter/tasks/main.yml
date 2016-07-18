@@ -1,7 +1,9 @@
+- name: Update apt-cache
+  sudo: yes
+  apt: update_cache=yes
+
 - name: Download FBX Python SDK
   get_url: url=http://download.autodesk.com//us/fbx_release_older/2016.1.1/fbx20161_1_fbxpythonsdk_linux.tar.gz dest=/tmp/fbx20161_1_fbxpythonsdk_linux.tar.gz
 
 - name: Extract appannie runner
   unarchive: src=/tmp/fbx20161_1_fbxpythonsdk_linux.tar.gz dest=/home/deploy/ group=deploy owner=deploy copy=no
-
-// -- place here installation for python files

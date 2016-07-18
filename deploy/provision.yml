@@ -2,7 +2,4 @@
   remote_user: root
   hosts: server
   roles:
-    # - { role: server }
-    # - { role: crushlovely.deploy-user }
-    # - { role: ANXS.python }
     - { role: converter }
